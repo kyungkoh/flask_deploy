@@ -9,7 +9,7 @@ import json
 import jpype
 from utils import *
 
-
+# -*- coding: utf-8 -*-cd
 
 app = Flask(__name__)
 
@@ -59,4 +59,4 @@ def PredictMain():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=5000, debug=True)
