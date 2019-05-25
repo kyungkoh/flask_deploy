@@ -1,11 +1,12 @@
 from konlpy.tag import Okt
 from sklearn.feature_extraction.text import TfidfVectorizer
 import csv
-
+import jpype
 okt = Okt()
 
 
 def openStopword():
+    jpype.attachThreadToJVM()
     f = open('stopwords.csv', 'r', encoding='utf-8')
     reader = csv.reader(f)
     stopwords = list()
@@ -17,6 +18,7 @@ def openStopword():
 
 
 def tokenizer(raw, pos=["Noun","Verb"], stopword=openStopword()):
+    jpype.attachThreadToJVM()
     return [
         word for word, tag in okt.pos(
             raw,

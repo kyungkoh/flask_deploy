@@ -16,16 +16,19 @@ app = Flask(__name__)
 
 #   예측 후 핵심역량 이름으로 return
 def SVCpredict(model, text):
+    jpype.attachThreadToJVM()
     keyword_names = ['글로벌역량', '능동', '도전', '성실', '소통', '인내심', '정직', '주인의식', '창의', '팀워크']
     result = model.predict([text])
     return keyword_names[result[0] - 1]
 
 #   decision function으로 예측 후 리스트 형태로 return
 def SVCdecision(model, text):
+    jpype.attachThreadToJVM()
     return model.decision_function([text]).tolist()[0]
 
 #   분석 후 dictionary 형태로 return
 def SVCproba(model, text):
+    jpype.attachThreadToJVM()
     proba = model.predict_proba([text]).tolist()[0]
     proba = [format(proba[i], '.30f') for i in range(10)]
     keyword_eng = ['global', 'active', 'challenge', 'sincerity', 'communication', 'patient', 'honesty',
@@ -37,9 +40,11 @@ def SVCproba(model, text):
 
 #   분석 후 json으로 저장
 def UserAnalysis(model, text):
+    jpype.attachThreadToJVM()
     return json.dumps(SVCproba(model, text))
 
 def openModel():
+    jpype.attachThreadToJVM()
     filename = 'SVC_PROB.joblib'
     svc_from_joblib = joblib.load(filename)
     return svc_from_joblib
@@ -49,6 +54,7 @@ svc_from_joblib = openModel();
 
 @app.route('/')
 def PredictMain():
+    jpype.attachThreadToJVM()
     #   keyword_names = ['글로벌역량', '능동', '도전', '성실', '소통', '인내심', '정직', '주인의식', '창의', '팀워크']
     #   job = ['architecture', 'IT', 'management', 'production', 'sales']
     #   company = ['samsung', 'hyundai', 'LG', 'SK', 'CJ']
@@ -59,5 +65,4 @@ def PredictMain():
 
 
 if __name__ == '__main__':
-    jpype.attachThreadToJVM()
     app.run(host='0.0.0.0', port=5000, debug=True)
