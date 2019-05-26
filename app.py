@@ -1,3 +1,4 @@
+from __future__ import print_function
 from flask import Flask,jsonify
 
 import pickle
@@ -8,7 +9,6 @@ import csv
 import json
 import jpype
 from utils import *
-from __future__ import print_function
 import boto3
 import decimal
 from boto3.dynamodb.conditions import Key, Attr
